@@ -54,3 +54,34 @@ function changeDirection(event) {
   else if (key == 39 && direction !== 'LEFT') direction = 'RIGHT';
   else if (key == 40 && direction !== 'UP') direction = 'DOWN';
 }
+
+function updateSnake() {
+  // Get current head position
+  let headX = snake[0].x;
+  let headY = snake[0].y;
+
+  // Change head position based on direction
+  if (direction == 'LEFT') headX -= box;
+  if (direction == 'UP') headY -= box;
+  if (direction == 'RIGHT') headX += box;
+  if (direction == 'DOWN') headY += box;
+
+  // New head
+  let newHead = { x: headX, y: headY };
+
+  // Collision with food
+  if (headX == food.x && headY == food.y) {
+    score++;
+    // Place new food
+    food = {
+      x: Math.floor(Math.random() * 20) * box,
+      y: Math.floor(Math.random() * 20) * box
+    };
+  } else {
+    // Remove tail
+    snake.pop();
+  }
+
+  // Add new head to the front of the snake
+  snake.unshift(newHead);
+}
