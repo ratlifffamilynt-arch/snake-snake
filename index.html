@@ -4,29 +4,14 @@
   <meta charset="UTF-8">
   <title>Snake Game</title>
   <style>
-    canvas {
-      border: 1px solid #000;
-      background: #eee;
-      display: block;
-      margin: 20px auto;
-    }
-    #restartBtn {
-      display: none;
-      margin: 10px auto;
-      font-size: 18px;
-      padding: 8px 24px;
-      cursor: pointer;
-      display: block;
-    }
-    #gameOverMessage {
-      text-align: center;
-      color: red;
-    }
+    canvas { border: 1px solid #000; background: #eee; display: block; margin: 20px auto; }
+    #restartBtn { display: none; margin: 10px auto; font-size: 18px; padding: 8px 24px; cursor: pointer; }
+    #gameOverMessage { text-align: center; color: red; }
   </style>
 </head>
 <body>
   <h1 id="gameOverMessage"></h1>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <canvas id="gameCanvas" width="400" height="400" tabindex="1"></canvas>
   <button id="restartBtn">Restart</button>
   <script src="snake.js"></script>
 </body>
