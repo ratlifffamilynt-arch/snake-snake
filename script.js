@@ -85,3 +85,42 @@ function updateSnake() {
   // Add new head to the front of the snake
   snake.unshift(newHead);
 }
+
+
+function checkCollision(head, arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (head.x == arr[i].x && head.y == arr[i].y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function gameOver() {
+  // Wall collision
+  if (
+    snake[0].x < 0 || snake[0].x >= canvas.width ||
+    snake[0].y < 0 || snake[0].y >= canvas.height
+  ) {
+    return true;
+  }
+  // Self collision
+  if (checkCollision(snake[0], snake.slice(1))) {
+    return true;
+  }
+  return false;
+}
+
+
+function gameLoop() {
+  if (gameOver()) {
+    clearInterval(game);
+    alert('Game Over! Your score: ' + score);
+    return;
+  }
+  updateSnake();
+  draw();
+}
+
+// Call gameLoop every 100ms (10 times per second)
+let game = setInterval(gameLoop, 100);
