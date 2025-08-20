@@ -23,7 +23,7 @@ function initGame() {
   restartBtn.style.display = 'none';
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (game) clearInterval(game);
-  game = setInterval(gameLoop, 200);
+  game = setInterval(gameLoop, 300);
   canvas.focus();
 }
 
