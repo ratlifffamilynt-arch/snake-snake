@@ -1,17 +1,27 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const gameOverMessage = document.getElementById('gameOverMessage');
+const restartBtn = document.getElementById('restartBtn');
 
 const box = 20;
-let snake = [
-  { x: 9 * box, y: 10 * box }
-];
-let direction = 'RIGHT';
-let food = {
-  x: Math.floor(Math.random() * 20) * box,
-  y: Math.floor(Math.random() * 20) * box
-};
-let score = 0;
+let game;
+let snake, direction, food, score;
+
+function initGame() {
+  snake = [
+    { x: 9 * box, y: 10 * box }
+  ];
+  direction = 'RIGHT';
+  food = {
+    x: Math.floor(Math.random() * 20) * box,
+    y: Math.floor(Math.random() * 20) * box
+  };
+  score = 0;
+  gameOverMessage.textContent = '';
+  restartBtn.style.display = 'none';
+  if (game) clearInterval(game);
+  game = setInterval(gameLoop, 100);
+}
 
 function draw() {
   ctx.fillStyle = '#eee';
@@ -93,10 +103,13 @@ function gameLoop() {
   if (gameOver()) {
     clearInterval(game);
     gameOverMessage.textContent = 'Game Over! Your score: ' + score;
+    restartBtn.style.display = 'block';
     return;
   }
   updateSnake();
   draw();
 }
 
-let game = setInterval(gameLoop, 100);
+restartBtn.addEventListener('click', initGame);
+
+initGame();
