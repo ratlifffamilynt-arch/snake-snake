@@ -43,3 +43,14 @@ function draw() {
   ctx.font = '20px Arial';
   ctx.fillText('Score: ' + score, 10, 20);
 }
+
+
+document.addEventListener('keydown', changeDirection);
+
+function changeDirection(event) {
+  const key = event.keyCode;
+  if (key == 37 && direction !== 'RIGHT') direction = 'LEFT';
+  else if (key == 38 && direction !== 'DOWN') direction = 'UP';
+  else if (key == 39 && direction !== 'LEFT') direction = 'RIGHT';
+  else if (key == 40 && direction !== 'UP') direction = 'DOWN';
+}
