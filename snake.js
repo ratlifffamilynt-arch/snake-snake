@@ -3,33 +3,58 @@ const ctx = canvas.getContext('2d');
 const gameOverMessage = document.getElementById('gameOverMessage');
 const restartBtn = document.getElementById('restartBtn');
 
-const box = 20;
+// Responsive resizing: keep canvas square and scale grid
+function resizeCanvas() {
+  let min = Math.min(window.innerWidth, window.innerHeight, 400);
+  canvas.width = min;
+  canvas.height = min;
+}
+resizeCanvas();
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  draw();
+});
+
+function getBoxSize() {
+  return canvas.width / 20;
+}
+
 let game;
 let snake, direction, food, score;
-let lastKeyDir = 'RIGHT'; // To prevent reversing
+let lastKeyDir = 'RIGHT';
 
 function initGame() {
   snake = [
-    { x: 9 * box, y: 10 * box }
+    { x: 9 * getBoxSize(), y: 10 * getBoxSize() }
   ];
   direction = 'RIGHT';
   lastKeyDir = 'RIGHT';
-  food = {
-    x: Math.floor(Math.random() * 20) * box,
-    y: Math.floor(Math.random() * 20) * box
-  };
+  food = randomFood();
   score = 0;
   gameOverMessage.textContent = '';
   restartBtn.style.display = 'none';
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (game) clearInterval(game);
-  game = setInterval(gameLoop, 600);
-  canvas.focus();
+  game = setInterval(gameLoop, 200);
+}
+
+function randomFood() {
+  let box = getBoxSize();
+  let newFood;
+  do {
+    newFood = {
+      x: Math.floor(Math.random() * 20) * box,
+      y: Math.floor(Math.random() * 20) * box
+    };
+  } while (snake && snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
+  return newFood;
 }
 
 function draw() {
   ctx.fillStyle = '#eee';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  let box = getBoxSize();
 
   for (let i = 0; i < snake.length; i++) {
     ctx.fillStyle = i === 0 ? 'green' : 'lime';
@@ -42,8 +67,8 @@ function draw() {
   ctx.fillRect(food.x, food.y, box, box);
 
   ctx.fillStyle = 'black';
-  ctx.font = '20px Arial';
-  ctx.fillText('Score: ' + score, 10, 20);
+  ctx.font = Math.floor(box) + 'px Arial';
+  ctx.fillText('Score: ' + score, 10, Math.floor(box));
 }
 
 function changeDirection(event) {
@@ -54,7 +79,16 @@ function changeDirection(event) {
   else if (key === 40 && lastKeyDir !== 'UP') { direction = 'DOWN'; lastKeyDir = 'DOWN'; }
 }
 
+// Mobile/touch control helper
+function setDirection(newDir) {
+  if (newDir === 'LEFT' && lastKeyDir !== 'RIGHT') { direction = 'LEFT'; lastKeyDir = 'LEFT'; }
+  else if (newDir === 'UP' && lastKeyDir !== 'DOWN') { direction = 'UP'; lastKeyDir = 'UP'; }
+  else if (newDir === 'RIGHT' && lastKeyDir !== 'LEFT') { direction = 'RIGHT'; lastKeyDir = 'RIGHT'; }
+  else if (newDir === 'DOWN' && lastKeyDir !== 'UP') { direction = 'DOWN'; lastKeyDir = 'DOWN'; }
+}
+
 function updateSnake() {
+  let box = getBoxSize();
   let headX = snake[0].x;
   let headY = snake[0].y;
 
@@ -67,15 +101,7 @@ function updateSnake() {
 
   if (headX === food.x && headY === food.y) {
     score++;
-    // Place new food, avoid placing on the snake
-    let newFood;
-    do {
-      newFood = {
-        x: Math.floor(Math.random() * 20) * box,
-        y: Math.floor(Math.random() * 20) * box
-      };
-    } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
-    food = newFood;
+    food = randomFood();
   } else {
     snake.pop();
   }
@@ -93,6 +119,7 @@ function checkCollision(head, arr) {
 }
 
 function gameOver() {
+  let box = getBoxSize();
   if (
     snake[0].x < 0 || snake[0].x >= canvas.width ||
     snake[0].y < 0 || snake[0].y >= canvas.height
@@ -116,10 +143,16 @@ function gameLoop() {
   draw();
 }
 
-// Only add the event listener once!
-document.removeEventListener('keydown', changeDirection); // Remove if already exists (safe)
+// Keyboard controls (desktop)
 document.addEventListener('keydown', changeDirection);
 
+// Mobile/touch controls (and desktop click)
+document.getElementById('upBtn').addEventListener('click', () => setDirection('UP'));
+document.getElementById('downBtn').addEventListener('click', () => setDirection('DOWN'));
+document.getElementById('leftBtn').addEventListener('click', () => setDirection('LEFT'));
+document.getElementById('rightBtn').addEventListener('click', () => setDirection('RIGHT'));
+
+// Restart button
 restartBtn.addEventListener('click', initGame);
 
 initGame();
