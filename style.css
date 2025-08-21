@@ -1,0 +1,45 @@
+body {
+  font-family: sans-serif;
+  background: #fafafa;
+}
+canvas {
+  width: 90vw;
+  max-width: 400px;
+  height: 90vw;
+  max-height: 400px;
+  display: block;
+  margin: 20px auto;
+  background: #eee;
+  border: 1px solid #000;
+  touch-action: none; /* Prevents scrolling when swiping on canvas */
+}
+#gameOverMessage {
+  text-align: center;
+  color: red;
+}
+#restartBtn {
+  display: none;
+  margin: 10px auto;
+  font-size: 18px;
+  padding: 8px 24px;
+  display: block;
+}
+#mobile-controls {
+  text-align: center;
+  margin-top: 10px;
+}
+#mobile-controls button {
+  font-size: 2em;
+  width: 60px;
+  height: 60px;
+  margin: 5px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #f0f0f0;
+}
+@media (min-width: 401px) {
+  canvas {
+    width: 400px;
+    height: 400px;
+  }
+}
