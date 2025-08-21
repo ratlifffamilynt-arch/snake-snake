@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <h1>Snake Game</h1>
-  <style>
-    canvas { border: 1px solid #000; background: #eee; display: block; margin: 20px auto; }
-    #restartBtn { display: none; margin: 10px auto; font-size: 18px; padding: 8px 24px; cursor: pointer; }
-    #gameOverMessage { text-align: center; color: red; }
-  </style>
+  <title>Snake Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1 id="gameOverMessage"></h1>
-  <canvas id="gameCanvas" width="400" height="400" tabindex="1"></canvas>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
   <button id="restartBtn">Restart</button>
+  <div id="mobile-controls">
+    <button id="upBtn">⬆️</button><br>
+    <button id="leftBtn">⬅️</button>
+    <button id="downBtn">⬇️</button>
+    <button id="rightBtn">➡️</button>
+  </div>
   <script src="snake.js"></script>
 </body>
 </html>
