@@ -5,9 +5,16 @@ const restartBtn = document.getElementById('restartBtn');
 
 // Responsive resizing: keep canvas square and scale grid
 function resizeCanvas() {
-  let min = Math.min(window.innerWidth, window.innerHeight, 400);
-  canvas.width = min;
-  canvas.height = min;
+  // Choose the smallest of: 98vw, 60vw, 600px, or window height - room for buttons
+  let size = Math.min(
+    window.innerWidth * 0.98,
+    window.innerWidth * 0.98,
+    window.innerHeight - 240, // leave space for controls, buttons, etc.
+    600
+  );
+  if (size < 200) size = 200; // minimum size for playability
+  canvas.width = size;
+  canvas.height = size;
 }
 resizeCanvas();
 window.addEventListener('resize', () => {
@@ -38,7 +45,7 @@ function initGame() {
   restartBtn.style.display = 'none';
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (game) clearInterval(game);
-  game = setInterval(gameLoop, 200);
+  game = setInterval(gameLoop, 120);
 }
 
 function randomFood() {
@@ -69,10 +76,12 @@ function draw() {
   ctx.fillStyle = 'red';
   ctx.fillRect(food.x, food.y, box, box);
 
+  // Draw score and high score at top of canvas
   ctx.fillStyle = 'black';
-  ctx.font = Math.floor(box) + 'px Arial';
-  ctx.fillText('Score: ' + score, 10, Math.floor(box));
-  ctx.fillText('High Score: ' + highScore, 10, Math.floor(box) * 2);
+  ctx.font = Math.max(Math.floor(box), 16) + 'px Arial';
+  ctx.textBaseline = 'top';
+  ctx.fillText('Score: ' + score, 8, 4);
+  ctx.fillText('High: ' + highScore, 8, Math.floor(box));
 }
 
 function changeDirection(event) {
@@ -143,7 +152,7 @@ function gameLoop() {
       highScore = score;
       localStorage.setItem('snakeHighScore', highScore);
     }
-    gameOverMessage.textContent = 'Game Over! Your score: ' + score + ' | High Score: ' + highScore;
+    gameOverMessage.textContent = 'Game Over! Your score: ' + score + ' | High: ' + highScore;
     restartBtn.style.display = 'block';
     return;
   }
@@ -157,10 +166,10 @@ document.addEventListener('keydown', changeDirection);
 // Mobile/touch controls (instant response)
 function addControlEvents(btnId, dir) {
   const btn = document.getElementById(btnId);
-  btn.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevents possible double event or scrolling
+  btn.addEventListener('touchstart', function(e) {
+    e.preventDefault(); // Prevents default scrolling/tap delay
     setDirection(dir);
-  });
+  }, {passive: false});
   btn.addEventListener('click', () => setDirection(dir));
 }
 
