@@ -3,32 +3,25 @@ html, body {
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: sans-serif;
   background: #fafafa;
   min-height: 100vh;
 }
-
 canvas {
-  width: 98vw;         /* Nearly full width on mobile */
-  height: 60vw;        /* 60% of viewport width, keeps it big but not too tall */
-  max-width: 600px;    /* Don't let it get huge on desktop */
-  max-height: 600px;
   display: block;
   margin: 24px auto 8px auto;
   background: #eee;
   border: 2px solid #000;
   touch-action: none;
+  /* The width/height are set in JS for pixel-perfect scaling */
 }
-
 #gameOverMessage {
   text-align: center;
   color: red;
   font-size: 1.2em;
   min-height: 1.2em;
 }
-
 #restartBtn {
   display: none;
   margin: 10px auto;
@@ -36,12 +29,10 @@ canvas {
   padding: 10px 40px;
   display: block;
 }
-
 #mobile-controls {
   text-align: center;
   margin-top: 18px;
 }
-
 #mobile-controls button {
   font-size: 2.4em;
   width: 80px;
@@ -53,11 +44,4 @@ canvas {
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-}
-
-@media (min-width: 601px) {
-  canvas {
-    width: 600px;
-    height: 600px;
-  }
 }
