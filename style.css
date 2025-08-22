@@ -1,45 +1,63 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: sans-serif;
   background: #fafafa;
+  min-height: 100vh;
 }
+
 canvas {
-  width: 90vw;
-  max-width: 400px;
-  height: 90vw;
-  max-height: 400px;
+  width: 98vw;         /* Nearly full width on mobile */
+  height: 60vw;        /* 60% of viewport width, keeps it big but not too tall */
+  max-width: 600px;    /* Don't let it get huge on desktop */
+  max-height: 600px;
   display: block;
-  margin: 20px auto;
+  margin: 24px auto 8px auto;
   background: #eee;
-  border: 1px solid #000;
-  touch-action: none; /* Prevents scrolling when swiping on canvas */
+  border: 2px solid #000;
+  touch-action: none;
 }
+
 #gameOverMessage {
   text-align: center;
   color: red;
+  font-size: 1.2em;
+  min-height: 1.2em;
 }
+
 #restartBtn {
   display: none;
   margin: 10px auto;
-  font-size: 18px;
-  padding: 8px 24px;
+  font-size: 1.2em;
+  padding: 10px 40px;
   display: block;
 }
+
 #mobile-controls {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 18px;
 }
+
 #mobile-controls button {
-  font-size: 2em;
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-  border-radius: 10px;
-  border: 1px solid #333;
+  font-size: 2.4em;
+  width: 80px;
+  height: 80px;
+  margin: 8px;
+  border-radius: 16px;
+  border: 2px solid #333;
   background: #f0f0f0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-@media (min-width: 401px) {
+
+@media (min-width: 601px) {
   canvas {
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
   }
 }
