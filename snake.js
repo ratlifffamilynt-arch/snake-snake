@@ -23,6 +23,9 @@ let game;
 let snake, direction, food, score;
 let lastKeyDir = 'RIGHT';
 
+// High score using localStorage
+let highScore = localStorage.getItem('snakeHighScore') ? parseInt(localStorage.getItem('snakeHighScore')) : 0;
+
 function initGame() {
   snake = [
     { x: 9 * getBoxSize(), y: 10 * getBoxSize() }
@@ -69,6 +72,7 @@ function draw() {
   ctx.fillStyle = 'black';
   ctx.font = Math.floor(box) + 'px Arial';
   ctx.fillText('Score: ' + score, 10, Math.floor(box));
+  ctx.fillText('High Score: ' + highScore, 10, Math.floor(box) * 2);
 }
 
 function changeDirection(event) {
@@ -135,7 +139,11 @@ function gameOver() {
 function gameLoop() {
   if (gameOver()) {
     clearInterval(game);
-    gameOverMessage.textContent = 'Game Over! Your score: ' + score;
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('snakeHighScore', highScore);
+    }
+    gameOverMessage.textContent = 'Game Over! Your score: ' + score + ' | High Score: ' + highScore;
     restartBtn.style.display = 'block';
     return;
   }
@@ -146,11 +154,20 @@ function gameLoop() {
 // Keyboard controls (desktop)
 document.addEventListener('keydown', changeDirection);
 
-// Mobile/touch controls (and desktop click)
-document.getElementById('upBtn').addEventListener('click', () => setDirection('UP'));
-document.getElementById('downBtn').addEventListener('click', () => setDirection('DOWN'));
-document.getElementById('leftBtn').addEventListener('click', () => setDirection('LEFT'));
-document.getElementById('rightBtn').addEventListener('click', () => setDirection('RIGHT'));
+// Mobile/touch controls (instant response)
+function addControlEvents(btnId, dir) {
+  const btn = document.getElementById(btnId);
+  btn.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevents possible double event or scrolling
+    setDirection(dir);
+  });
+  btn.addEventListener('click', () => setDirection(dir));
+}
+
+addControlEvents('upBtn', 'UP');
+addControlEvents('downBtn', 'DOWN');
+addControlEvents('leftBtn', 'LEFT');
+addControlEvents('rightBtn', 'RIGHT');
 
 // Restart button
 restartBtn.addEventListener('click', initGame);
