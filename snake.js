@@ -188,7 +188,7 @@ function gameLoop() {
       highScore = score;
       localStorage.setItem('snakeHighScore', highScore);
     }
-    gameOverMessage.textContent = 'Game Over! Your score: ' + score + ' | High: ' + highScore;
+    gameOverMessage.textContent = 'Game Over you idiot! Your score: ' + score + ' | High: ' + highScore;
     restartBtn.style.display = 'block';
     return;
   }
